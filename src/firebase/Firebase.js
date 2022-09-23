@@ -4,7 +4,13 @@ import { getStorage } from "firebase/storage";
 import { getFirestore } from "@firebase/firestore";
 
 const firebaseConfig = {
-    
+    apiKey: "AIzaSyA5FdzEinWwp4MP5ByfhHBCF03QWVR5f6g",
+  authDomain: "choijin-temple.firebaseapp.com",
+  projectId: "choijin-temple",
+  storageBucket: "choijin-temple.appspot.com",
+  messagingSenderId: "184673010246",
+  appId: "1:184673010246:web:b9b02c59bb1d20a3bec047",
+  measurementId: "G-VHYS3Y6015"
 };
 
 const app = initializeApp(firebaseConfig);
