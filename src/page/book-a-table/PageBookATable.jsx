@@ -4,28 +4,20 @@ import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 
 export const PageBookATable = () => {
-  const [onclickTable, setOnclickTable] = useState(false);
+  const [clickTable, setclickTable] = useState(false);
   const [ peopleNumber , setPeopleNumber] = useState();
   const [open, setOpen] = useState(true);
 
-  const styles = {
-    bookATable: {
-      backgroundColor: "primary.light",
-      color: "primary.light",
-    },
-  };
-
-  const Order = (i) => {
-    // setOnclickTable(!onclickTable);
+  const TookNumberPeople = () => {
     setOpen(!open);
     setPeopleNumber(peopleNumber)
   };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
   const PeopleNumberCheck = () => {
-    !peopleNumber ? alert('Та хүний тоогоо оруулнуу') : peopleNumber >= 13 ? alert('Хүний тоо хэтэрсэн байна') : Order();
-    // console.log(peopleNumber);
+    !peopleNumber ? alert('Та хүний тоогоо оруулнуу') : peopleNumber >= 13 ? alert('Хүний тоо хэтэрсэн байна') : TookNumberPeople();
+    console.log(peopleNumber);
+  };
+  const TableOrder = () => { 
+    setclickTable(!clickTable)
   }
   return (
     <>
@@ -40,31 +32,28 @@ export const PageBookATable = () => {
                 <Button onClick={() => PeopleNumberCheck()}>Болсон</Button>
             </Box>
         </Backdrop>
-      </Box>
-      {/* <Box width="100%" height="100vh" sx={styles.bookATable}>
         {Table.map((e, i) => {
           return (
             <Box key={i}>
               <Button
                 variant="outlined"
-                sx={{ color: "primary.second", width: "200px" }}
-                onClick={() => Order(e)}
+                sx={{ color: "primary.light", width: "200px" }}
+                onClick={() => TableOrder(e)}
               >
                 {e.tableNumber}
+                {Table.filter(e)}
               </Button>
-              <Backdrop
-                sx={{
-                    position: "absolute",
-                    zIndex: (theme)=>theme.zIndex.drawer - 1,
-                    opacity: 0.5
-                }}
-                open={open}
-                onClick={handleClose}
-              ></Backdrop>
             </Box>
           );
         })}
-      </Box> */}
+        <Backdrop
+        open={clickTable}
+        sx={{backgroundColor: 'red'}}
+        onClick={() => setclickTable(!clickTable)}
+        >
+
+        </Backdrop>
+      </Box>
     </>
   );
 };
@@ -85,7 +74,9 @@ const style = {
   howManyPeople: {
     backgroundColor: 'primary.second',
     flexDirection: 'column',
-    justifyContent: 'center' , alignItems: 'center'
+    justifyContent: 'center' , alignItems: 'center',
+    width: "100%",
+    height: '100vh'
   },
   peopleNumberInputSection: {
     width: '30%',
