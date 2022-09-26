@@ -1,19 +1,29 @@
-import { Button, Divider, List, ListItem, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  List,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import DarkLogo from "../../images/Logo.svg";
 import { useNavigate } from "react-router-dom";
+import { db } from "../../firebase/Firebase";
+import { collection , addDoc } from "firebase/firestore";
 
 export const PageBookATable = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [clickTable, setclickTable] = useState(false);
   const [peopleNumber, setPeopleNumber] = useState();
   const [manyPeople, setManyPeople] = useState();
   const [open, setOpen] = useState(true);
-  const [orderCheck ,  setOrderCheck] = useState(false);
-  const [name , setName] = useState('');
-  const [phone , setPhone] = useState(0);
+  const [orderCheck, setOrderCheck] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState(0);
+  const [ table , setTable] = useState('')
+  const usersCollection = collection(db, "users")
   const TookNumberPeople = () => {
     setOpen(!open);
     setManyPeople(peopleNumber);
@@ -31,14 +41,26 @@ export const PageBookATable = () => {
         ? alert("Боломжгүй ширээ")
         : e.numberOfPeopleSitting >= manyPeople
         ? setclickTable(!clickTable)
-        : alert("no")
+        : alert("nono")
       : e.numberOfPeopleSitting >= manyPeople
       ? setclickTable(!clickTable)
       : alert("no");
+      setTable(e)
   };
   const Check = () => {
-    setOrderCheck(!orderCheck)
-    setclickTable(!clickTable)
+    name === ""
+      ? alert("Та нэрээ оруулнуу")
+      : phone.length === 8
+      ? setOrderCheck(!orderCheck)
+      : alert("Та дугаараа оруулнуу");
+  };
+  const OrderTable = async() => { 
+    await (usersCollection , { 
+      peopleNumber : {manyPeople},
+      name: {name},
+      phone: {phone},
+      table: {table},
+     }).then(setOrderCheck(!orderCheck))
   }
   return (
     <>
@@ -112,29 +134,35 @@ export const PageBookATable = () => {
             <Typography variant="h5" textAlign="center">
               Hэр утасны дугаар аа үлдээн үү
             </Typography>
-            <TextField type="text" label="Нэр" onChange={(e) => setName(e.target.value)} ></TextField>
-            <TextField type="number" label="Утасны дугаар" onChange={(e) => setPhone(e.target.value)} ></TextField>
+            <TextField
+              type="text"
+              label="Нэр"
+              onChange={(e) => setName(e.target.value)}
+            ></TextField>
+            <TextField
+              type="number"
+              label="Утасны дугаар"
+              onChange={(e) => setPhone(e.target.value)}
+            ></TextField>
             <Button type="submit" onClick={() => Check()}>
               Баталгаажуулах
             </Button>
+            <Button onClick={() => setclickTable(!clickTable)}>Буцах</Button>
           </Box>
         </Backdrop>
-        <Backdrop 
-        open={orderCheck}
-        >
-            <List sx={style.orderList}> 
-              {/* <ListItem> */}
-                  <Typography variant="h5" >
-                    {name}
-                  </Typography>
-                  <Typography variant="h5" >
-                    {phone}
-                  </Typography>
-                  <Typography variant="h5" >
-                    {manyPeople}
-                  </Typography>
-              {/* </ListItem> */}
-            </List>
+        <Backdrop open={orderCheck}>
+          <List sx={style.orderList}>
+            <Typography variant="h4" textAlign="center">
+              Нэр:  <Typography variant="span">{name}</Typography>
+            </Typography>
+            <Typography variant="h4" textAlign="center">
+              Утас:  <Typography variant="span">{phone}</Typography>
+            </Typography>
+            <Typography variant="h4" textAlign="center">
+              Хүний тоо:  <Typography variant="span">{manyPeople}</Typography>
+            </Typography>
+            <Button variant="contained" onClick={() => OrderTable()} >Ширээ захиалах</Button>
+          </List>
         </Backdrop>
       </Box>
     </>
@@ -195,14 +223,23 @@ const style = {
     alignItems: "center",
   },
   tableposition: {
-    // border: "1px solid white",
     display: "grid",
     gridTemplateColumns: "repeat( 6 , 1fr )",
     gridGap: "5%",
   },
   orderList: {
-    width: '400px',
-    height: "500px",
-    backgroundColor: 'primary.light'
-  }
+    height: "400px",
+    backgroundColor: "primary.light",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
+    padding: "2%",
+    backgroundColor: "primary.light",
+    boxShadow: "5px 5px 10px grey",
+    ":hover": {
+      boxShadow: "10px 10px 20px grey",
+    },
+  },
 };
