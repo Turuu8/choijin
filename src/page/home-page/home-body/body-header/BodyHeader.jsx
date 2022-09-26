@@ -1,5 +1,4 @@
 import { Box } from "@mui/system"
-import Europe from '../../../../images/europe.svg'
 export const BodyHeader = () => {
     const style = {
         bodyHeader: {

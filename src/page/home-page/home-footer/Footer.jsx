@@ -1,6 +1,5 @@
 import { IconButton, Typography } from "@mui/material"
-import { Box, fontSize } from "@mui/system"
-import Logo from '../../../images/Logo.svg'
+import { Box  } from "@mui/system"
 import FacebookIcon from '@mui/icons-material/Facebook';
 import EmailIcon from '@mui/icons-material/Email';
 export const HomeFooter = () => {

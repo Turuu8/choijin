@@ -7,9 +7,8 @@ import { useLoginAndDataContext } from "../../../../context/LoginAndData";
 import ClearIcon from "@mui/icons-material/Clear";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { storage } from "../../../../firebase/Firebase";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import { useEffect } from "react";
 import { db } from "../../../../firebase/Firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { FoodCart } from "./cart/Cart";
@@ -18,7 +17,9 @@ export const BodyBody = () => {
   const [newName, setNewName] = useState("");
   const [newAge, setNewAge] = useState("");
 
-  const [users, setUsers] = useState([]);
+  console.log(newAge , newName , uploadList)
+
+  // const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "foods");
 
   const [addCart, setAddCart] = useState(false);

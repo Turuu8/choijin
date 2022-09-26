@@ -24,7 +24,6 @@ import { Tooltip } from "@mui/material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
-import { BookATable } from "./home-body/home-body-book-a-table/BodyBookATable";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import { Service } from "./service/Service";
 import { useNavigate } from "react-router-dom";
@@ -114,7 +113,6 @@ export const HomePage = () => {
   const { small } = useMenuBarContext();
   const { userCheck, signOutFromFirebase } = useLoginAndDataContext();
 
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {

@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea } from '@mui/material';
 export const FoodCart = () => {
     return (
         <Card sx={{ maxWidth: 400 , padding: '0.5%', backgroundColor: 'primary.second', color: 'primary.light' , margin: '1%' ,boxShadow: '0 0 10px 0 #841c23'}}>
