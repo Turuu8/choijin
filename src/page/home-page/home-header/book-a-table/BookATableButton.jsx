@@ -1,10 +1,25 @@
 import { Button } from "@mui/material"
 import Tooltip from '@mui/material/Tooltip';
+import { useNavigate } from "react-router-dom";
+import { useLoginAndDataContext } from "../../../../context/LoginAndData";
 
 export const BookATableButton = () => {
+    const { userCheck} = useLoginAndDataContext();
+    const navigate = useNavigate()
+    const Check = () => {
+        if(userCheck === true){
+            navigate("/bookatable")
+        }
+        else {
+            alert("Ширээ захиалхийн өмнө та нэвтрэх хэрэгтэй");
+            navigate("/login")
+        }
+    }
     return (
         <Tooltip title="Book a table">
-            <Button href="/bookatable" sx={{
+            <Button
+            onClick={() => Check()}
+             sx={{
                 fontWeight: "bold",
                 backgroundColor: "primary.main",
                 color: '#ffffff',
