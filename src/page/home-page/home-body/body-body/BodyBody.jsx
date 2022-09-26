@@ -17,7 +17,6 @@ export const BodyBody = () => {
   const [newName, setNewName] = useState("");
   const [newAge, setNewAge] = useState("");
 
-  console.log(newAge , newName , uploadList)
 
   // const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "foods");
@@ -26,6 +25,9 @@ export const BodyBody = () => {
 
   const [upload, setUpload] = useState(null);
   const [uploadList, setUploadList] = useState([]);
+
+  console.log(newAge , newName , uploadList)
+
 
   const { userCheck } = useLoginAndDataContext();
 
