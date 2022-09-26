@@ -189,7 +189,7 @@ export const LoginPage = () => {
         >
           {!isSigup ? "Email хаягаар" : "Дугаараар"} нэвтрэх
         </Button>
-        <Button href="/">Буцах</Button>
+        <Button onClick={() =>  navigate('/')}>Буцах</Button>
         <Box component="div" id="recaptcha-container"></Box>
       </Box>
     </Box>

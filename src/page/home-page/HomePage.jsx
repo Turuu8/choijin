@@ -129,6 +129,7 @@ export const HomePage = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* ------- nav bar ---------- */}
       <AppBar
         id="llll"
         position="fixed"
@@ -176,6 +177,7 @@ export const HomePage = () => {
         <MainLogo />
         <BookATableButton />
       </AppBar>
+      {/* ------- nav bar ---------- */}
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton

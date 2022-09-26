@@ -1,121 +1,208 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Divider, List, ListItem, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import DarkLogo from '../../images/Logo.svg'
+import DarkLogo from "../../images/Logo.svg";
+import { useNavigate } from "react-router-dom";
 
 export const PageBookATable = () => {
-    const [clickTable, setclickTable] = useState(false);
-    const [peopleNumber, setPeopleNumber] = useState();
-    const [manyPeople, setManyPeople] = useState();
-    const [open, setOpen] = useState(true);
-    const TookNumberPeople = () => {
-        setOpen(!open);
-        setManyPeople(peopleNumber);
-    };
-    const PeopleNumberCheck = () => {
-        !peopleNumber
-            ? alert("Та хүний тоогоо оруулнуу")
-            : peopleNumber >= 7
-                ? alert("Хүний тоо хэтэрсэн байна")
-                : TookNumberPeople();
-    };
-    const TableOrder = (e) => {
-        e.numberOfPeopleSitting >= manyPeople ? setclickTable(!clickTable) : alert("no")
-        // setclickTable(!clickTable);
-    };
-    return (
-        <>
-            <Box p={4} sx={style.howManyPeople} >
-                <Box sx={style.backgroundImage} ></Box>
-                <Backdrop
-                    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={open}
+  const navigate = useNavigate()
+  const [clickTable, setclickTable] = useState(false);
+  const [peopleNumber, setPeopleNumber] = useState();
+  const [manyPeople, setManyPeople] = useState();
+  const [open, setOpen] = useState(true);
+  const [orderCheck ,  setOrderCheck] = useState(false);
+  const [name , setName] = useState('');
+  const [phone , setPhone] = useState(0);
+  const TookNumberPeople = () => {
+    setOpen(!open);
+    setManyPeople(peopleNumber);
+  };
+  const PeopleNumberCheck = () => {
+    !peopleNumber
+      ? alert("Та хүний тоогоо оруулнуу")
+      : peopleNumber >= 12
+      ? alert("Хүний тоо хэтэрсэн байна")
+      : TookNumberPeople();
+  };
+  const TableOrder = (e) => {
+    manyPeople < 5
+      ? e.numberOfPeopleSitting === 6
+        ? alert("Боломжгүй ширээ")
+        : e.numberOfPeopleSitting >= manyPeople
+        ? setclickTable(!clickTable)
+        : alert("no")
+      : e.numberOfPeopleSitting >= manyPeople
+      ? setclickTable(!clickTable)
+      : alert("no");
+  };
+  const Check = () => {
+    setOrderCheck(!orderCheck)
+    setclickTable(!clickTable)
+  }
+  return (
+    <>
+      <Box p={4} sx={style.howManyPeople}>
+        <Box sx={style.backgroundImage}></Box>
+        {/*  <<<<<<<<< people number >>>>>>>>> */}
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+        >
+          <Box display="flex" p={2} sx={style.peopleNumberInputSection}>
+            <Typography marginBottom="5%" textAlign="center" variant="h5">
+              Та хүний тоогоо оруулнуу уу?
+            </Typography>
+            <TextField
+              onChange={(e) => setPeopleNumber(e.target.value)}
+              type="number"
+            ></TextField>
+            <Button onClick={() => PeopleNumberCheck()}>Үргэжлүүлэх</Button>
+            <Button onClick={() => navigate("/")}>Буцах</Button>
+          </Box>
+        </Backdrop>
+        {/* <<<<<< Table positiob >>>>>>>> */}
+        <Box p={2} width="1200px" height="900px" sx={style.tableposition}>
+          {!open &&
+            Table.map((e, i) => {
+              return (
+                <Button
+                  key={i}
+                  variant={
+                    manyPeople < 5
+                      ? e.numberOfPeopleSitting === 6
+                        ? "outlined"
+                        : e.numberOfPeopleSitting >= manyPeople
+                        ? "contained"
+                        : "outlined"
+                      : e.numberOfPeopleSitting === 6
+                      ? "contained"
+                      : "outlined"
+                  }
+                  sx={{
+                    color: "primary.light",
+                    width: "100%",
+                    height: "100%",
+                    border:
+                      manyPeople < 5
+                        ? e.numberOfPeopleSitting === 6
+                          ? ""
+                          : e.numberOfPeopleSitting >= manyPeople
+                          ? "1px solid white"
+                          : ""
+                        : e.numberOfPeopleSitting === 6
+                        ? "1px solid white"
+                        : "",
+                  }}
+                  onClick={() => TableOrder(e)}
                 >
-                    <Box display="flex" p={2} sx={style.peopleNumberInputSection}>
-                        <Typography marginBottom="5%" textAlign="center" variant="h5">
-                            Та хүний тоогоо оруулнуу уу?
-                        </Typography>
-                        <TextField
-                            onChange={(e) => setPeopleNumber(e.target.value)}
-                            type="number"
-                        ></TextField>
-                        <Button onClick={() => PeopleNumberCheck()}>Болсон</Button>
-                    </Box>
-                </Backdrop>
-                <Box width='70%' height='70%' >
-
-                </Box>
-                <Grid container p={10} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} width='100%'>
-                    {Table.map((e, i) => {
-                        return (
-                            <Button
-                                key={i}
-                                variant="outlined"
-                                sx={{ color: "primary.light", width: "200px", height: '100px' }}
-                                onClick={() => TableOrder(e)}
-                            >
-                                {e.tableNumber}
-                                <Typography>{e.numberOfPeopleSitting} hunii sheere</Typography>
-                            </Button>
-                        );
-                    })}
-                </Grid>
-                <Backdrop
-                    open={clickTable}
-                    sx={{ backgroundColor: "red" }}
-                    onClick={() => setclickTable(!clickTable)}
-                ></Backdrop>
-            </Box>
-        </>
-    );
+                  <Typography variant="h6" textAlign="center">
+                    {e.tableNumber}
+                  </Typography>
+                  <Divider />
+                  {/* <Typography variant="span" >{e.numberOfPeopleSitting} hunii sheere</Typography> */}
+                </Button>
+              );
+            })}
+          <div style={{ gridArea: "3 / 1 / 4 / 5" }}></div>
+          <div style={{ gridArea: "2 / 2 / 3 / 3" }}></div>
+        </Box>
+        <Backdrop open={clickTable}>
+          <Box display="flex" p={1.5} sx={style.peopleNumberInputSection}>
+            <Typography variant="h5" textAlign="center">
+              Hэр утасны дугаар аа үлдээн үү
+            </Typography>
+            <TextField type="text" label="Нэр" onChange={(e) => setName(e.target.value)} ></TextField>
+            <TextField type="number" label="Утасны дугаар" onChange={(e) => setPhone(e.target.value)} ></TextField>
+            <Button type="submit" onClick={() => Check()}>
+              Баталгаажуулах
+            </Button>
+          </Box>
+        </Backdrop>
+        <Backdrop 
+        open={orderCheck}
+        >
+            <List sx={style.orderList}> 
+              {/* <ListItem> */}
+                  <Typography variant="h5" >
+                    {name}
+                  </Typography>
+                  <Typography variant="h5" >
+                    {phone}
+                  </Typography>
+                  <Typography variant="h5" >
+                    {manyPeople}
+                  </Typography>
+              {/* </ListItem> */}
+            </List>
+        </Backdrop>
+      </Box>
+    </>
+  );
 };
 
 const Table = [
-    { tableNumber: "T1", numberOfPeopleSitting: 6 },
-    { tableNumber: "T2", numberOfPeopleSitting: 6 },
-    { tableNumber: "T3", numberOfPeopleSitting: 6 },
-    { tableNumber: "T4", numberOfPeopleSitting: 6 },
-    { tableNumber: "T5", numberOfPeopleSitting: 6 },
-    { tableNumber: "T6", numberOfPeopleSitting: 6 },
-    { tableNumber: "T7", numberOfPeopleSitting: 4 },
-    { tableNumber: "T8", numberOfPeopleSitting: 4 },
-    { tableNumber: "T9", numberOfPeopleSitting: 4 },
+  { tableNumber: "T1", numberOfPeopleSitting: 4 },
+  { tableNumber: "T2", numberOfPeopleSitting: 4 },
+  { tableNumber: "T3", numberOfPeopleSitting: 4 },
+  { tableNumber: "T4", numberOfPeopleSitting: 4 },
+  { tableNumber: "T5", numberOfPeopleSitting: 4 },
+  { tableNumber: "T6", numberOfPeopleSitting: 4 },
+  { tableNumber: "Өвгөн", numberOfPeopleSitting: 6 },
+  { tableNumber: "T7", numberOfPeopleSitting: 4 },
+  { tableNumber: "T8", numberOfPeopleSitting: 4 },
+  { tableNumber: "T9", numberOfPeopleSitting: 4 },
+  { tableNumber: "Цонх", numberOfPeopleSitting: 4 },
+  { tableNumber: "Жан", numberOfPeopleSitting: 4 },
+  { tableNumber: "Жан булан", numberOfPeopleSitting: 4 },
 ];
 
 const style = {
-    howManyPeople: {
-        width: "100%",
-        height: "100vh",
-        backgroundColor: 'primary.second',
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+  howManyPeople: {
+    width: "100%",
+    height: "100vh",
+    backgroundColor: "primary.second",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backgroundImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100vh",
+    opacity: "0.3",
+    background: `url(${DarkLogo})`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "40%",
+  },
+  peopleNumberInputSection: {
+    width: "400px",
+    height: "270px",
+    backgroundColor: "primary.light",
+    boxShadow: "5px 5px 10px grey",
+    ":hover": {
+      boxShadow: "10px 10px 20px grey",
     },
-    backgroundImage: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100vh",
-        opacity: '0.3',
-        background: `url(${DarkLogo})`,
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: "40%",
-    },
-    peopleNumberInputSection: {
-        width: "400px",
-        height: "200px",
-        backgroundColor: "primary.light",
-        boxShadow: "5px 5px 10px grey",
-        ":hover": {
-            boxShadow: "10px 10px 20px grey",
-        },
-        color: "primary.second",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-around",
-        alignItems: "center",
-    },
+    color: "primary.second",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  tableposition: {
+    // border: "1px solid white",
+    display: "grid",
+    gridTemplateColumns: "repeat( 6 , 1fr )",
+    gridGap: "5%",
+  },
+  orderList: {
+    width: '400px',
+    height: "500px",
+    backgroundColor: 'primary.light'
+  }
 };
