@@ -108,6 +108,8 @@ const Drawer = styled(MuiDrawer, {
 
 export const HomePage = () => {
 
+  console.log(process.env.REACT_APP_APIKEY)
+
   const navigate = useNavigate();
 
   const { small } = useMenuBarContext();
@@ -329,7 +331,7 @@ export const HomePage = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>
         <HomeBody />
-        <Service/>
+        <Service />
         {/* <BookATable/> */}
         <HomeFooter />
       </Box>
