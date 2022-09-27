@@ -11,7 +11,7 @@ import Backdrop from "@mui/material/Backdrop";
 import DarkLogo from "../../images/Logo.svg";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase/Firebase";
-import { collection , addDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 export const PageBookATable = () => {
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ export const PageBookATable = () => {
   const [orderCheck, setOrderCheck] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState(0);
-  const [ table , setTable] = useState('')
-  const usersCollection = collection(db, "users")
+  const [table, setTable] = useState('')
+  const userSetdoc = (db, "users");
   const TookNumberPeople = () => {
     setOpen(!open);
     setManyPeople(peopleNumber);
@@ -32,36 +32,48 @@ export const PageBookATable = () => {
     !peopleNumber
       ? alert("Та хүний тоогоо оруулнуу")
       : peopleNumber >= 12
-      ? alert("Хүний тоо хэтэрсэн байна")
-      : TookNumberPeople();
+        ? alert("Хүний тоо хэтэрсэн байна")
+        : TookNumberPeople();
   };
   const TableOrder = (e) => {
     manyPeople < 5
       ? e.numberOfPeopleSitting === 6
         ? alert("Боломжгүй ширээ")
         : e.numberOfPeopleSitting >= manyPeople
-        ? setclickTable(!clickTable)
-        : alert("nono")
+          ? setclickTable(!clickTable)
+          : alert("nono")
       : e.numberOfPeopleSitting >= manyPeople
-      ? setclickTable(!clickTable)
-      : alert("no");
-      setTable(e)
+        ? setclickTable(!clickTable)
+        : alert("no");
+    setTable(e.tableNumber)
   };
   const Check = () => {
     name === ""
       ? alert("Та нэрээ оруулнуу")
       : phone.length === 8
-      ? setOrderCheck(!orderCheck)
-      : alert("Та дугаараа оруулнуу");
+        ? setOrderCheck(!orderCheck)
+        : alert("Та дугаараа оруулнуу");
   };
-  const OrderTable = async() => { 
-    await (usersCollection , { 
-      peopleNumber : {manyPeople},
-      name: {name},
-      phone: {phone},
-      table: {table},
-     }).then(setOrderCheck(!orderCheck))
+  const OrderTable = async () => {
+    setDoc(doc(db, "users", `${name, table}`), {
+      name: name,
+      phone: phone,
+      tableName: table,
+      manyPeople: manyPeople
+    });
+    // await setDoc(userSetdoc,
+    //   {
+    //     name: name,
+    //     phone: phone,
+    //     tableName: table
+    //   }).then(navigate("/"));
   }
+  // await setDoc(userSetdoc, {
+  //   name: name,
+  //   phone: phone,
+  //   tableName: table
+  // }.then(navigate("/"))
+  // }
   return (
     <>
       <Box p={4} sx={style.howManyPeople}>
@@ -84,6 +96,14 @@ export const PageBookATable = () => {
           </Box>
         </Backdrop>
         {/* <<<<<< Table positiob >>>>>>>> */}
+        {!open ? (
+          <Box  >
+            <Typography variant='h1' textAlign='center' sx={{ color: 'primary.light' }} >{manyPeople}</Typography>
+            <Button variant='contained' onClick={() => setOpen(!open)} >
+              Хүний тоо солих
+            </Button>
+          </Box>
+        ) : null}
         <Box p={2} width="1200px" height="900px" sx={style.tableposition}>
           {!open &&
             Table.map((e, i) => {
@@ -95,11 +115,11 @@ export const PageBookATable = () => {
                       ? e.numberOfPeopleSitting === 6
                         ? "outlined"
                         : e.numberOfPeopleSitting >= manyPeople
+                          ? "contained"
+                          : "outlined"
+                      : e.numberOfPeopleSitting === 6
                         ? "contained"
                         : "outlined"
-                      : e.numberOfPeopleSitting === 6
-                      ? "contained"
-                      : "outlined"
                   }
                   sx={{
                     color: "primary.light",
@@ -110,11 +130,11 @@ export const PageBookATable = () => {
                         ? e.numberOfPeopleSitting === 6
                           ? ""
                           : e.numberOfPeopleSitting >= manyPeople
-                          ? "1px solid white"
-                          : ""
+                            ? "1px solid white"
+                            : ""
                         : e.numberOfPeopleSitting === 6
-                        ? "1px solid white"
-                        : "",
+                          ? "1px solid white"
+                          : "",
                   }}
                   onClick={() => TableOrder(e)}
                 >
@@ -130,12 +150,12 @@ export const PageBookATable = () => {
           <div style={{ gridArea: "2 / 2 / 3 / 3" }}></div>
         </Box>
         <Backdrop open={clickTable}>
-          <Box display="flex" p={1.5} sx={style.peopleNumberInputSection}>
+          <Box display="flex" position='relative' p={1} sx={style.peopleNumberInputSection}>
             <Typography variant="h5" textAlign="center">
               Hэр утасны дугаар аа үлдээн үү
             </Typography>
             <TextField
-              type="text"
+              type='name'
               label="Нэр"
               onChange={(e) => setName(e.target.value)}
             ></TextField>
@@ -147,19 +167,19 @@ export const PageBookATable = () => {
             <Button type="submit" onClick={() => Check()}>
               Баталгаажуулах
             </Button>
-            <Button onClick={() => setclickTable(!clickTable)}>Буцах</Button>
+            <Button onClick={() => setclickTable(!clickTable)}  >Буцах</Button>
           </Box>
         </Backdrop>
         <Backdrop open={orderCheck}>
           <List sx={style.orderList}>
-            <Typography variant="h4" textAlign="center">
-              Нэр:  <Typography variant="span">{name}</Typography>
+            <Typography variant="h4" >
+              Нэр:  <Typography variant="span" sx={{ color: 'primary.main' }} >{name}</Typography>
             </Typography>
-            <Typography variant="h4" textAlign="center">
-              Утас:  <Typography variant="span">{phone}</Typography>
+            <Typography variant="h4" >
+              Утас:  <Typography variant="span" sx={{ color: 'primary.main' }} >{phone}</Typography>
             </Typography>
-            <Typography variant="h4" textAlign="center">
-              Хүний тоо:  <Typography variant="span">{manyPeople}</Typography>
+            <Typography variant="h4" >
+              Хүний тоо:  <Typography variant="span" sx={{ color: 'primary.main' }} >{manyPeople}</Typography>
             </Typography>
             <Button variant="contained" onClick={() => OrderTable()} >Ширээ захиалах</Button>
           </List>
@@ -210,7 +230,7 @@ const style = {
   },
   peopleNumberInputSection: {
     width: "400px",
-    height: "270px",
+    height: "300px",
     backgroundColor: "primary.light",
     boxShadow: "5px 5px 10px grey",
     ":hover": {
@@ -234,7 +254,7 @@ const style = {
     justifyContent: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    alignItems: "center",
+    // alignItems: "center",
     padding: "2%",
     backgroundColor: "primary.light",
     boxShadow: "5px 5px 10px grey",
