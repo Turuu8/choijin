@@ -23,13 +23,12 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Tooltip } from "@mui/material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
-import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import { Service } from "./service/Service";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
-
 const openedMixin = (theme) => ({
   backgroundColor: "black",
   color: "white",
@@ -107,9 +106,6 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const HomePage = () => {
-
-  console.log(process.env.REACT_APP_APIKEY)
-
   const navigate = useNavigate();
 
   const { small } = useMenuBarContext();
@@ -214,7 +210,7 @@ export const HomePage = () => {
           </ListItemButton>
           {/* ----- about ------ */}
           <ListItemButton
-            href='#order'
+            href="#order"
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -231,7 +227,10 @@ export const HomePage = () => {
             >
               <ApartmentIcon />
             </ListItemIcon>
-            <ListItemText primary="Бидний тухай" sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText
+              primary="Бидний тухай"
+              sx={{ opacity: open ? 1 : 0 }}
+            />
           </ListItemButton>
           {/* ----- menu ------ */}
           <ListItemButton
@@ -256,7 +255,7 @@ export const HomePage = () => {
           </ListItemButton>
           {/* ----- book a table  ------ */}
           <ListItemButton
-            href='#order'
+            href="#order"
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -273,13 +272,16 @@ export const HomePage = () => {
             >
               <TableRestaurantIcon />
             </ListItemIcon>
-            <ListItemText primary="Ширээ захиалага" sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText
+              primary="Ширээ захиалага"
+              sx={{ opacity: open ? 1 : 0 }}
+            />
           </ListItemButton>
           {/* ----- login ------ */}
           {!userCheck ? (
             <Tooltip title="Нэвтрэх">
               <ListItemButton
-                onClick={() => navigate('/login')}
+                onClick={() => navigate("/login")}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
