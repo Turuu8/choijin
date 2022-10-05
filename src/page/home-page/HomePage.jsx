@@ -20,7 +20,7 @@ import { MainLogo } from "./home-header/main-logo/MainLogo";
 import { BookATableButton } from "./home-header/book-a-table/BookATableButton";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { Tooltip } from "@mui/material";
+import { Backdrop, Button, TextField, Tooltip } from "@mui/material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
@@ -125,8 +125,35 @@ export const HomePage = () => {
     signOutFromFirebase();
   };
 
+  const [opening, setOpening] = React.useState(true);
+  const [nummm, setNum] = React.useState(0);
+  const handleCloseeee = () => {
+    setOpening(!opening);
+  };
+  const handleToggleeee = () => {
+    console.log(nummm);
+    if (nummm == 9012) {
+      setOpening(!opening);
+    } else {
+      alert("Please enter");
+    }
+  };
   return (
     <Box sx={{ display: "flex" }}>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={opening}
+        // onClick={handleCloseeee}
+      >
+        <TextField
+          color="warning"
+          label="number"
+          type="number"
+          onChange={(e) => setNum(e.target.value)}
+          sx={{ backgroundColor: "white", borderRadius: "4px" }}
+        ></TextField>
+        <Button onClick={() => handleToggleeee()}>Check</Button>
+      </Backdrop>
       {/* ------- nav bar ---------- */}
       <AppBar
         id="llll"
