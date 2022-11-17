@@ -132,7 +132,7 @@ export const HomePage = () => {
   };
   const handleToggleeee = () => {
     console.log(nummm);
-    if (nummm == 9012) {
+    if (nummm == 1234) {
       setOpening(!opening);
     } else {
       alert("Please enter");
